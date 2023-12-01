@@ -1,8 +1,6 @@
 import Header from '../components/common/Header'
 import Footer from '../components/common/Footer'
 
-import { useAppContext } from '../utils/GlobalContext';
-
 import React, { useState, useEffect } from 'react';
 import subjectApi from '../apis/subjectApi';
 
@@ -11,7 +9,7 @@ import subjectApi from '../apis/subjectApi';
 
 const Subject = () => {
 
-    const { subjects, setSubjects } = useAppContext();
+    const [ subjects, setSubjects ] = useState([]);
 
     useEffect(() => {
     // Fetch subjects from your API when the component mounts
@@ -29,6 +27,8 @@ const Subject = () => {
     fetchSubjects();
     }, []);
 
+    const totalCredits = subjects.reduce((acc, subject) => acc + subject.credits, 0);
+
     return (
         <div>
             <Header/>
@@ -39,8 +39,9 @@ const Subject = () => {
                             <tr>
                             <th width="8%">STT</th>
                             <th width="11%">Mã học phần</th>
-                            <th width="65%">Tên học phần</th>
+                            <th width="56%">Tên học phần</th>
                             <th width="16%">Số TC</th>
+                            <th width="10%">Chi tiết</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,6 +52,7 @@ const Subject = () => {
                                 <td>{subject.code}</td>
                                 <td>{subject.name}</td>
                                 <td>{subject.credits}</td>
+                                <td><a href={'/manager_super_admin/subject/' + subject._id} >Chi tiết</a></td>
                             </tr>
                         ))}
                             
@@ -59,11 +61,12 @@ const Subject = () => {
                             <tr className="table-primary">
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
+                            <td>&nbsp;</td>
                             <td style={{ textAlign: "right", paddingRight: 15, fontWeight: "bold" }}>
                                 Tổng số tín chỉ:
                             </td>
                             <td>
-                                <strong>9</strong>
+                                <strong>{totalCredits}</strong>
                             </td>
                             </tr>
                         </tfoot>

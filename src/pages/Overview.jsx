@@ -1,22 +1,25 @@
 import Header from '../components/common/Header'
 import Footer from '../components/common/Footer'
 import subjectApi from '../apis/subjectApi';
+import { useDispatch, useSelector } from 'react-redux'
 
-import React, { useEffect } from 'react';
-
-import { useAppContext } from '../utils/GlobalContext';
+import React, { useEffect, useState } from 'react';
 
 const Overview = () => {
-    
+    const dispatch = useDispatch()
 
-    const { subjects, setSubjects } = useAppContext();
+    const [subjects, setSubjects] = useState([]);
+
+    const user = useSelector((state) => state.user.value);
+
+    console.log(user);
 
     useEffect(() => {
     // Fetch subjects from your API when the component mounts
     const fetchSubjects = async () => {
         try {
             const response = await subjectApi.getAll();
-            // console.log(response);
+            console.log(response.data);
             setSubjects(response.data);
             
         } catch (error) {
@@ -26,6 +29,8 @@ const Overview = () => {
 
     fetchSubjects();
     }, []);
+
+    const totalCredits = subjects.reduce((acc, subject) => acc + subject.credits, 0);
 
     return (
         <div>
@@ -52,7 +57,7 @@ const Overview = () => {
                         Tổng số học phần:
                     </td>
                     <td>
-                        <strong>113</strong>
+                        <strong>{totalCredits}</strong>
                     </td>
                     </tr>
                     <tr>

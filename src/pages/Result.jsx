@@ -1,7 +1,33 @@
 import Header from '../components/common/Header'
 import Footer from '../components/common/Footer'
 
+import planApi  from '../apis/planApi';
+import authUtils from '../utils/authUtils';
+
+import React, { useEffect, useState } from 'react';
+
 const Result = () => {
+
+    const [plans, setPlans] = useState([]);
+
+    useEffect(() => {
+        // Fetch subjects from your API when the component mounts
+        const fetchSubjects = async () => {
+            try {
+                const user = await authUtils.isAuthenticated();
+                console.log(user);
+                const response = await planApi.getAll(user._id);
+                console.log(response.data);
+                setPlans(response.data);
+                
+            } catch (error) {
+                console.error('Error fetching subjects', error);
+            }
+        };
+    
+    fetchSubjects();
+    }, []);
+
 
     return (
         <div>
@@ -14,7 +40,6 @@ const Result = () => {
                         <th width="6%">STT</th>
                         <th width="11%">Mã học phần</th>
                         <th width="50%">Tên học phần</th>
-                        <th width="6%">Nhóm</th>
                         <th width="6%">Tín chỉ</th>
                         <th width="8%">Điểm chữ</th>
                         <th width="8%">Điểm số</th>
@@ -22,36 +47,17 @@ const Result = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                        <td>1</td>
-                        <td>CT211</td>
-                        <td>An ninh mạng</td>
-                        <td>03</td>
-                        <td>3</td>
-                        <td>A</td>
-                        <th>9.0</th>
-                        <th>*</th>
-                        </tr>
-                        <tr>
-                        <td>2</td>
-                        <td>CT274</td>
-                        <td>Lập trình thiết bị di động</td>
-                        <td>03</td>
-                        <td>3</td>
-                        <td>A</td>
-                        <th>9.0</th>
-                        <th>*</th>
-                        </tr>
-                        <tr>
-                        <td>3</td>
-                        <td>CT226</td>
-                        <td>Niên luận cơ sở mạng máy tính và truyền thông</td>
-                        <td>03</td>
-                        <td>3</td>
-                        <td>A</td>
-                        <th>9.0</th>
-                        <th>*</th>
-                        </tr>
+                        {plans.map((plan, index) => (
+                            <tr key={plan._id}>
+                                <td>{index + 1}</td>
+                                <td>{plan.subject.code}</td>
+                                <td>{plan.subject.name}</td>
+                                <td>{plan.subject.credits}</td>
+                                <td>{plan.score_1}</td>
+                                <td>{plan.score_2}</td>
+                                <td>*</td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
 

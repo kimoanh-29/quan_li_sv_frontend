@@ -20,6 +20,47 @@ header {
   left: 60px;
 }
 
+.option {
+  width: 100px;
+  height: 50px;
+}
+
+.custom-select {
+  display: inline-block;
+  width: 100%; /* Make it full width */
+  padding: 8px; /* Add some padding for better appearance */
+  border: 1px solid #ccc; /* Add a border for better visibility */
+  border-radius: 5px; /* Optional: Rounded corners */
+}
+
+.custom {
+  margin-top: 4px;
+  margin-right: 80px;
+}
+
+.custom1 {
+  margin-top: 20px;
+}
+
+/* Apply styles to the options within the select */
+.custom-select option {
+  background-color: #fff; /* Background color of each option */
+  color: #333; /* Text color of each option */
+}
+
+header .icons a{
+  font-size: 2.5 rem;;
+  color: #333;
+  margin-left: 1.5rem;
+  outline: none;
+  border: none;
+  text-decoration: none;
+}
+
+header .icons a:hover {
+  color: var(--pink);
+}
+
 .header-title {
   width: 100%;
   display: flex;

@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import Header from '../components/common/Header'
 import Footer from '../components/common/Footer'
-import { useDispatch } from 'react-redux';
-import { setSubject } from '../redux/features/subjectSlice'
+import { useNavigate } from 'react-router-dom';
 
-import subjectApi from '../apis/subjectApi'
+import authApi from '../apis/authApi'
 
-const CreateSubject = () => {
-    const dispatch = useDispatch();
+const Login = () => {
+
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        name: '',
-        code: '',
-        credits: '',
+        username: '',
+        password: '',
     });
     
       // Function to handle input changes
@@ -31,16 +30,17 @@ const CreateSubject = () => {
 
         try {
             // Use the formData to create a subject
-            const subject = await subjectApi.create(formData);
-            console.log(subject);
-            dispatch(setSubject(subject));
+            const response = await authApi.login(formData);
+            console.log(response);
+
+            localStorage.setItem('token', response.data.token);
 
             // Reset the form after submission
             setFormData({
-                name: '',
-                code: '',
-                credits: '',
+                username: '',
+                password: '',
             });
+            navigate('/overview');  
 
             // Handle success or navigate to another page if needed
         } catch (err) {
@@ -55,38 +55,29 @@ const CreateSubject = () => {
             <main>
                 <div className="noi-dung">
                     <div className="form">
-                    <h2>TẠO MÔN HỌC MỚI</h2>
+                    <h2>Đăng nhập</h2>
                     <form onSubmit={handleSubmit}>
                         <div className="input-form">
-                            <span>TÊN MÔN HỌC</span>
+                            <span>USERNAME</span>
                             <input
                             type="text"
-                            id="name"
-                            name="name"
-                            value={formData.name}
+                            id="username"
+                            name="username"
+                            value={formData.username}
                             onChange={handleInputChange}
                             />
                         </div>
                         <div className="input-form">
-                            <span>MÃ MÔN HỌC</span>
+                            <span>PASSWORD</span>
                             <input
                             type="text"
-                            id="code"
-                            name="code"
-                            value={formData.code}
+                            id="password"
+                            name="password"
+                            value={formData.password}
                             onChange={handleInputChange}
                             />
                         </div>
-                        <div className="input-form">
-                            <span>TÍN CHỈ</span>
-                            <input
-                            type="text"
-                            id="credits"
-                            name="credits"
-                            value={formData.credits}
-                            onChange={handleInputChange}
-                            />
-                        </div>
+                        
                         <button type="submit">TẠO</button>
                         </form>
                     {/* <div id="success-message" style={{ display: "none" }}>
@@ -101,4 +92,4 @@ const CreateSubject = () => {
     );
 };
 
-export default CreateSubject;
+export default Login;

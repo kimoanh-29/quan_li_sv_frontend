@@ -1,4 +1,12 @@
+import { useState, useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 const Header = props => {
+    const navigate = useNavigate();
+    const Logout = () => {
+        localStorage.clear();
+        navigate('/');
+    }
+
     return (
         <header>
             <nav className="navbar navbar-expand-sm">
@@ -53,17 +61,10 @@ const Header = props => {
                     </a>
                     </li>
                 </ul>
-                <form className="d-flex" role="search">
-                    <input
-                    className="form-control me-2"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                    />
-                    <button className="btn btn-outline-light" type="submit">
-                    Search
-                    </button>
-                </form>
+                <div className='icons'>
+                    <a href="/login" className='fa fa-user'></a>
+                    <button onClick={Logout}>Đăng xuất</button>
+                </div>
                 </div>
             </div>
             </nav>
